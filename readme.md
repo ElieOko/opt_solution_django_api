@@ -35,9 +35,9 @@ INSTALLED_APPS =[
 &emsp;&emsp;&emsp;]
 
 
-## Model
+## Model simple
 Qu'est-ce que sait un model ?
->Un modèle est la source unique et définitive d'informations sur vos données . Il contient les champs et comportements essentiels des données que vous stockez, comme le dit monsieur Hervé le modèle c'est la couche logique de nos donnée.\
+>Un modèle est la source unique et définitive d'informations sur vos données . Il contient les champs et comportements essentiels des données que vous stockez, comme le dit monsieur Hervé le modèle c'est la couche logique de nos donnée.
 
 * __*Importation*__
 >from __django.db__ import __models__
@@ -45,7 +45,7 @@ Qu'est-ce que sait un model ?
 * __*Structure de la classe*__
 > __class__ `TimeStampModel`(models.Model):\
 &emsp;&emsp;created_at = models.DateTimeField(auto_now_add=True)\
-&emsp;&emsp;updated_at = models.DateTimeField(auto_now=True)\
+&emsp;&emsp;updated_at = models.DateTimeField(auto_now=True)
 >
 > &emsp;&emsp;class Meta:\
 > &emsp;&emsp;&emsp;&emsp;abstract = True
@@ -61,6 +61,9 @@ _________________
 Qu'est-ce que sait un serializer ?
 >Les sérialiseurs sont utilisés pour convertir des types de données complexes, tels que les instances de modèle Django, en types de données Python
 qui peuvent être facilement restitués en JSON, XML ou d'autres types de contenu . Les sérialiseurs assurent également la désérialisation, permettant aux données analysées d'être reconverties en types complexes après avoir d'abord validé les données entrantes.
+
+* Créez un fichier __serializers.py__ dans votre application
+
 * __*Importation*__
 > from rest_framework import ``serializers``\
 > from __.models__ import ``Option``
@@ -72,10 +75,51 @@ ________
 > &emsp;&emsp;&emsp;&emsp;# Afficher tous les champs\
 > &emsp;&emsp;&emsp;&emsp;fields = '``__all__``'\
 > &emsp;&emsp;&emsp;&emsp; # Afficher des champs personalisés\
-> &emsp;&emsp;&emsp;&emsp; fields = ['```libelleOption```','```Autrechamps```']\
+> &emsp;&emsp;&emsp;&emsp; fields = ['```libelleOption```','```Autrechamps```']
 
 ___________
+## Enregistrez vos models dans le fichier admin.py de votre application
 
-## View
+``admin.site.register(Option)``\
+``...``
 
-## Api
+## View simple
+* __*Importation*__
+> from .serializer import ``OptionSerializer``\
+> from __.models__ import ``Option``
+
+
+> class OptionViewSet(viewsets.ModelViewSet):\
+    &emsp;&emsp;&emsp;queryset = Option.objects.all()\
+    &emsp;&emsp;&emsp;serializer_class = OptionSerializer
+
+## Créez un fichier url dans votre application
+* __*url.py*__ dans ce fichier nous définirons un router pour permettre le routage de nos differentes viewset\
+* Structure du code
+>from rest_framework import routers\
+from .views import OptionViewSet\
+> 
+> router = routers.DefaultRouter()\
+router.register(r'option', OptionViewSet)\
+urlpatterns = router.urls
+
+### Inclure votre fichier url.py contenant le routage des differents vues dans votre fichier urls.py se trouvant la repertoire principal du projet
+* Structure du code
+> from django.contrib import admin\
+> from django.urls import path, include
+>
+> urlpatterns = [\
+    path('admin/', admin.site.urls),\
+    path('api/', include('params_basic.url'))\
+]
+
+* Lancez votre serveur depuis le terminal avec
+* notre mini simple api se trouve dans la route *``/api``*
+>``python manage.py runserver``
+## Api (Application programming interface)
+* Quelques méthodes\
+POST\
+GET\
+PUT\
+DELETE\
+PATCH\
