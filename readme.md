@@ -8,6 +8,7 @@
 > from rest_framework import ``serializers``\
 > from __.models__ import ``Option``
 ________
+* __*Structure de la classe*__
 > __class__ `OptionSerializer`(``serializers``.ModelSerializer):\
 &emsp;&emsp;class `Meta`:\
 > &emsp;&emsp;&emsp;&emsp;model = Option\
