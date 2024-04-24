@@ -37,8 +37,26 @@ INSTALLED_APPS =[
 
 ## Model
 Qu'est-ce que sait un model ?
->Un modèle est la source unique et définitive d'informations sur vos données . Il contient les champs et comportements essentiels des données que vous stockez, comme le dit monsieur Hervé le modèle c'est la couche logique de nos donnée.
+>Un modèle est la source unique et définitive d'informations sur vos données . Il contient les champs et comportements essentiels des données que vous stockez, comme le dit monsieur Hervé le modèle c'est la couche logique de nos donnée.\
 
+* __*Importation*__
+>from __django.db__ import __models__
+
+* __*Structure de la classe*__
+> __class__ `TimeStampModel`(models.Model):\
+&emsp;&emsp;created_at = models.DateTimeField(auto_now_add=True)\
+&emsp;&emsp;updated_at = models.DateTimeField(auto_now=True)\
+>
+> &emsp;&emsp;class Meta:\
+> &emsp;&emsp;&emsp;&emsp;abstract = True
+
+> __class__ `Option`(TimeStampModel):\
+&emsp;&emsp;libelleOption = models.CharField(max_length=100, null=True, blank=True)\
+\
+&emsp;&emsp;``def __str__(self):``\
+&emsp;&emsp;&emsp;&emsp; return self.libelleOption
+
+_________________
 ## Serializers Simple
 Qu'est-ce que sait un serializer ?
 >Les sérialiseurs sont utilisés pour convertir des types de données complexes, tels que les instances de modèle Django, en types de données Python
