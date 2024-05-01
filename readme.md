@@ -1,11 +1,36 @@
 # Documentation du projet
-## Installation django
+<details>
+<summary> <b>Utilisez le projet existant dans ce réferentiel</b> </summary>
+
+Télécharger le projet
+- Installez django et django restframework avec cette commande ``pip install django djangorestframework``
+- Ensuite accèdez dans le projet avec ``cd opt_solution``
+- Lancez le serveur avec ``python manage.py runserver``
+
+Pour acceder dans le compte admin voici la procédure
+- Ajoutez ``/admin`` sur l'url http://localhost:8000/
+- cas d'usage http://localhost:8000/admin 
+
+Voici les identifiants du super utilisateur
+- nom d'utilisateur : ``elieo``
+- mot de passe : ``open``
+
+Pour acceder dans notre api voici la procédure
+- Ajoutez ``/api`` sur l'url http://localhost:8000/
+- cas d'usage http://localhost:8000/api
+
+<b>Good@fun</b>
+</details>
+<br>
+<details>
+<summary><b>Construire le projet à partir de zéro</b></summary>
+
 Lorsque vous partez d'un projet à zéro procéder ainsi pour créer votre projet
-- Assurez-vous que ``Python`` est installé sur votre machine\
+- Assurez-vous que ``Python`` est installé sur votre machine
 pour vérifier si python est correctement installé sur votre machine taper la commande ``python --version``
 - Assurez-vous d'avoir soit ``VSCode`` ou ``pycharm``
 - Créez un nouveau projet dans l'environnement de développement integré de votre choix
-____________________
+
 - Installez django à partir du ``terminal`` de votre projet\
 ``pip install django``
 - Créez votre projet \
@@ -71,7 +96,7 @@ ________
 * __*Structure de la classe*__
 > __class__ `OptionSerializer`(``serializers``.ModelSerializer):\
 &emsp;&emsp;class `Meta`:\
-        > &emsp;&emsp;&emsp;&emsp;model = ``Option``\
+         &emsp;&emsp;&emsp;&emsp;model = ``Option``\
 > &emsp;&emsp;&emsp;&emsp;# Afficher tous les champs\
 > &emsp;&emsp;&emsp;&emsp;fields = '``__all__``'\
 > &emsp;&emsp;&emsp;&emsp; # Afficher des champs personalisés\
@@ -94,7 +119,7 @@ ___________
     &emsp;&emsp;&emsp;serializer_class = OptionSerializer
 
 ## Créez un fichier url dans votre application
-* __*url.py*__ dans ce fichier nous définirons un router pour permettre le routage de nos differentes viewset\
+* __*url.py*__ dans ce fichier nous définirons un router pour permettre le routage de nos differentes viewset
 * Structure du code
 >from rest_framework import routers\
 from .views import OptionViewSet\
@@ -121,7 +146,7 @@ urlpatterns = router.urls
 POST\
 GET\
 PUT\
-DELETE\
+DELETE
 
 
 ## ViewSet Action
@@ -170,4 +195,7 @@ Ameliorant notre ViewSet avec ces méthodes inclut par défaut dans notre ViewSe
     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;option = self.get_object()\
     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;option.delete()\
     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response(status=status.HTTP_204_NO_CONTENT, data={"message": "Suppression réussie avec succès"})
+</details>
+
+
 
