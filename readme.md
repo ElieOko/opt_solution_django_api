@@ -71,7 +71,7 @@ ________
 * __*Structure de la classe*__
 > __class__ `OptionSerializer`(``serializers``.ModelSerializer):\
 &emsp;&emsp;class `Meta`:\
-> &emsp;&emsp;&emsp;&emsp;model = ``Option``\
+        > &emsp;&emsp;&emsp;&emsp;model = ``Option``\
 > &emsp;&emsp;&emsp;&emsp;# Afficher tous les champs\
 > &emsp;&emsp;&emsp;&emsp;fields = '``__all__``'\
 > &emsp;&emsp;&emsp;&emsp; # Afficher des champs personalisés\
@@ -122,4 +122,52 @@ POST\
 GET\
 PUT\
 DELETE\
-PATCH\
+
+
+## ViewSet Action
+Les routeurs par défaut inclus dans le framework REST fourniront des routes pour un ensemble standard d'actions
+
+Ameliorant notre ViewSet avec ces méthodes inclut par défaut dans notre ViewSet
+
+> create\
+> list\
+> update\
+> destroy\
+> retrieve
+
+* __*Importation*__
+> from rest_framework import viewsets, permissions, status\
+> from rest_framework.response import Response\
+> from .serializer import ``OptionSerializer``\
+> from __.models__ import ``Option``
+
+> class OptionViewSet(viewsets.ModelViewSet):\
+    &emsp;&emsp;&emsp;queryset = Option.objects.all()\
+    &emsp;&emsp;&emsp;serializer_class = OptionSerializer\
+    &emsp;&emsp;&emsp;# Protection de la route avec l'authentification\
+    &emsp;&emsp;&emsp;permission_classes = [permissions.IsAuthenticated]\
+\
+    &emsp;&emsp;&emsp;def __``create``__(self, request, *args, **kwargs):\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;serializer = OptionSerializer(data=request.data)\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if serializer.is_valid():\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response(status=status.HTTP_201_CREATED, data={"message": "Enregistrement réussi avec succès",'option': serializer.data})\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)\
+\
+    &emsp;&emsp;&emsp;def __``list``__(self, request, *args, **kwargs):\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;option = Option.objects.all()\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;serializer = OptionSerializer(option, many=True)\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response(data={'options': serializer.data})\
+\
+    &emsp;&emsp;&emsp;def __``update``__(self, request, *args, **kwargs):\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;option = self.get_object()\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;serializer = SectionSerializer(option, data=request.data)\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if serializer.is_valid():\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;serializer.save()\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response(data={"message": "Modification réussie avec succès", 'option': serializer.data}, status=status.HTTP_200_OK)\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)\
+\
+    &emsp;&emsp;&emsp;def __``destroy``__(self, request, *args, **kwargs):\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;option = self.get_object()\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;option.delete()\
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;return Response(status=status.HTTP_204_NO_CONTENT, data={"message": "Suppression réussie avec succès"})
+
