@@ -3,7 +3,7 @@
 <summary> <b>Utilisez le projet existant dans ce réferentiel</b> </summary>
 
 Télécharger le projet
-- Installez django et django restframework avec cette commande ``pip install django djangorestframework``
+- Installez django et django restframework avec cette commande ``pip install django djangorestframework django-filter``
 - Ensuite accèdez dans le projet avec ``cd opt_solution``
 - Lancez le serveur avec ``python manage.py runserver``
 
