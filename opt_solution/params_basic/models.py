@@ -42,13 +42,16 @@ class Promotion(TimeStampModel):
 
 class Student(TimeStampModel):
     objects = None
-    matricule = models.CharField(max_length=255, null=False, blank=True)
+    matricule = models.CharField(max_length=255, null=False, blank=True, unique=True)
     nom = models.CharField(max_length=255, null=False, blank=True)
     postnom = models.CharField(max_length=255, null=False, blank=True)
     prenom = models.CharField(max_length=255, null=False, blank=True)
-    fk_promotion = models.OneToOneField(Promotion, on_delete=models.CASCADE)
+    fk_promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
     genre = models.CharField(max_length=10, null=False, blank=True)
     date_de_naissance = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.nom} {self.prenom}'
 
 
 class TypeFraisAcademique(TimeStampModel):
@@ -72,3 +75,7 @@ class FraisAcademiqueStudent(TimeStampModel):
     frais_academique = models.ForeignKey(FraisAcademique, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     status_paiement = models.BooleanField(default=False)
+
+
+# class GenerateDocumenPaiementStudent(TimeStampModel):
+#     student

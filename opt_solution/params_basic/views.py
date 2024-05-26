@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, generics
 from rest_framework.response import Response
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,10 +13,6 @@ from .serializer import (SectionSerializer, OptionSerializer, PromotionSerialize
 class SectionViewSet(viewsets.ModelViewSet):
     queryset = Section.objects.all()
     serializer_class = SectionSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['libelleSection']
-    lookup_field = "libelleSection"
-    # permission_classes = [permissions.IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         section = self.get_object()
@@ -34,6 +30,7 @@ class SectionViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         section = Section.objects.all()
+
         serializer = SectionSerializer(section, many=True)
         return Response(data={'section': serializer.data})
 
@@ -49,10 +46,6 @@ class SectionViewSet(viewsets.ModelViewSet):
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
     serializer_class = OptionSerializer
-    # lookup_field = 'libelleOption'
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['libelleOption']
-    # permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = OptionSerializer(data=request.data)
@@ -118,34 +111,37 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['matricule']
+    filterset_fields = ['matricule']
 
-    def create(self, request, *args, **kwargs):
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED,
-                            data={"message": "Enregistrement réussi avec succès", 'promotion': serializer.data})
-        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    # def create(self, request, *args, **kwargs):
+    #     serializer = StudentSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(status=status.HTTP_201_CREATED,
+    #                         data={"message": "Enregistrement réussi avec succès", 'promotion': serializer.data})
+    #     return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    #
+    # def update(self, request, *args, **kwargs):
+    #     data = self.get_object()
+    #     serializer = StudentSerializer(data, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(data={"message": "Modification réussie avec succès", 'student': serializer.data},
+    #                         status=status.HTTP_200_OK)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #
+    # def list(self, request, *args, **kwargs):
+    #     data = Student.objects.all()
+    #     serializer = StudentSerializer(data, many=True)
+    #     return Response(data={'students': serializer.data})
+    #
+    # def destroy(self, request, *args, **kwargs):
+    #     data = self.get_object()
+    #     data.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT, data={"message": "Suppression réussie avec succès"})
 
-    def update(self, request, *args, **kwargs):
-        data = self.get_object()
-        serializer = StudentSerializer(data, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data={"message": "Modification réussie avec succès", 'student': serializer.data},
-                            status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def list(self, request, *args, **kwargs):
-        data = Student.objects.all()
-        serializer = StudentSerializer(data, many=True)
-        return Response(data={'students': serializer.data})
 
-    def destroy(self, request, *args, **kwargs):
-        data = self.get_object()
-        data.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT, data={"message": "Suppression réussie avec succès"})
 
 
 class FraisAcademiqueStudentViewSet(viewsets.ModelViewSet):
@@ -247,3 +243,11 @@ class TypeFraisAcademiqueViewSet(viewsets.ModelViewSet):
         data = self.get_object()
         data.delete()
         return Response(status=status.HTTP_204_NO_CONTENT, data={"message": "Suppression réussie avec succès"})
+
+
+class SectionListSearch(generics.ListAPIView):
+    queryset = Section.objects.all()
+    serializer_class = SectionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['libelleSection']
+

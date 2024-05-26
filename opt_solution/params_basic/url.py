@@ -1,9 +1,10 @@
 from rest_framework import routers
 from .views import (SectionViewSet, OptionViewSet, PromotionViewSet, StudentViewSet, TypeFraisAcademiqueViewSet,
-                    FraisAcademiqueStudentViewSet, FraisAcademiqueViewSet)
+                    FraisAcademiqueStudentViewSet, FraisAcademiqueViewSet, SectionListSearch)
 
-router = routers.DefaultRouter(use_regex_path=False)
+router = routers.DefaultRouter()
 router.register(r'section', SectionViewSet)
+# router.register(r'search/section', SectionListSearch)
 router.register(r'option', OptionViewSet)
 router.register(r'promotion', PromotionViewSet)
 router.register(r'student', StudentViewSet)
